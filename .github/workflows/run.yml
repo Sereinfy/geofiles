@@ -14,8 +14,8 @@ jobs:
         uses: actions/checkout@v2
       - name: lists
         run: |
-          curl -sSL -o GeoIP.dat https://github.com/DustinWin/ruleset_geodata/releases/download/clash/geoip.dat
-          curl -sSL -o GeoSite.dat https://ghp.ci/https://github.com/DustinWin/ruleset_geodata/releases/download/clash/geosite-all-lite.dat
+          curl -sSL -o geoip.dat https://github.com/DustinWin/ruleset_geodata/releases/download/clash/geoip.dat
+          curl -sSL -o geosite.dat https://ghp.ci/https://github.com/DustinWin/ruleset_geodata/releases/download/clash/geosite-all-lite.dat
       - name: Commit and push changes
         run: |
           if [ -z "$(git status --porcelain)" ]; then
