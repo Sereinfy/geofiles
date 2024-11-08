@@ -1,0 +1,31 @@
+name: Merge Proxy Lists
+
+
+on:
+  schedule:
+    - cron: 0 8 * * *
+  workflow_dispatch:
+jobs:
+  merge_lists:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: lists
+        run: |
+          curl -sSL -o GeoIP.dat https://github.com/DustinWin/ruleset_geodata/releases/download/clash/geoip.dat
+          curl -sSL -o GeoSite.dat https://ghp.ci/https://github.com/DustinWin/ruleset_geodata/releases/download/clash/geosite-all-lite.dat
+      - name: Commit and push changes
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+              echo "暂无更新，结束运行"
+              exit 0
+          else
+            echo "status=success" >> $GITHUB_OUTPUT
+            git add .
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git commit -m "Updated at $(TZ=UTC-8 date +'%Y-%m-%d %H:%M:%S')" -a
+            git push -f -u origin main
+          fi
